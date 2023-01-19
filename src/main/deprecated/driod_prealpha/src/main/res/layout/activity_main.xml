@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="381dp"
+        android:layout_height="395dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/barcode_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:padding="5dp"
+        android:text="@string/app_name"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/surface_view"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+    <Button
+        android:id="@+id/classes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="192dp"
+        android:text="Activities"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barcode_text"
+        app:layout_constraintVertical_bias="0.368" />
+
+    <Button
+        android:id="@+id/setting"
+        android:layout_width="105dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="44dp"
+        android:text="Setting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/classes"
+        app:layout_constraintTop_toBottomOf="@+id/barcode_text"
+        app:layout_constraintVertical_bias="0.235" />
+
+    <Button
+        android:id="@+id/override"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Override"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
