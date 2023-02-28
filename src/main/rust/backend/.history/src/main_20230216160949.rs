@@ -19,14 +19,6 @@ struct SqlObject<'r> {
     select: &'r str,
     from: &'r str,
 }
-
-// #[derive(Deserialize)]
-// #[serde(crate = "rocket::serde")]
-// struct Login<'r> {
-//     uuid: &'r str,
-//     password: &'r str,
-// }
-
 #[get("/check")]
 fn check() -> status::Accepted<String> { status::Accepted(Some("Here".parse().unwrap())) }
 
@@ -39,20 +31,13 @@ fn check_in(check_in: Json<CheckIn<'_>>) -> status::Accepted<String> {
 }
 
 #[post("/sql_req", format = "application/json", data = "<sql_object>", rank = 2)]
-fn sql_req(sql_object: Json<SqlObject<'_>>) -> status::Accepted<String> {
+fn sql_req(sql_string: Json<SqlObject<'_>>) -> status::Accepted<String> {
     // Insert into database
     //DATABASE.insert(entry.into_inner());
     //print!(entry);
-    status::Accepted(Some(format!("SELECT {} FROM {}", sql_object.select, sql_object.from)))
+    status::Accepted(Some(format!("SELECT {} FROM {}", sql_string.sql)))
 }
 
-// #[post("/login", format = "application/json", data = "<login>", rank = 3)]
-// fn login(login: Json<Login<'_>>) -> status::Accepted<String> {
-//     // Insert into database
-//     //DATABASE.insert(entry.into_inner());
-//     //print!(entry);
-//     status::Accepted(Some(format!("Welcome {}!", login.name)))
-// }
 
 #[launch]
 fn rocket() -> _ {
