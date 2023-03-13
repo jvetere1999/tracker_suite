@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.sjf.swe.backend.objects.EventTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-26T13:19:26" hostname="Jacobs-MacBook-Pro.local" time="0.03">
+  <properties/>
+  <testcase name="testEquals()" classname="edu.sjf.swe.backend.objects.EventTest" time="0.03"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
