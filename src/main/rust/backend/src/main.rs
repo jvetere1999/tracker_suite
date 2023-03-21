@@ -59,4 +59,4 @@ fn rocket() -> _ {
     rocket::build()
         .mount("/", rocket::routes![check, check_in, sql_req])
 
-        P!cknewPWD}
+}
