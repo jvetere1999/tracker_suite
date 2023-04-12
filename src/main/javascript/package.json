@@ -1,0 +1,14 @@
+{
+  "name": "trackersuiteqrgen",
+  "version": "1.0.0",
+  "description": "QRCode generator for Attendence app created for a CSCI Senior Project at SJFU",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brad Kinsman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
