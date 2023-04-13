@@ -43,8 +43,8 @@
 			const starttime = new Date();
 			const endtime = new Date(starttime.getTime() + 20000);
 			const qrdata = {
-				starttime : JSON.stringify(starttime.toUTCString()),
-				endtime : JSON.stringify(endtime.toUTCString()),
+				starttime : starttime.toUTCString(),
+				endtime : endtime.toUTCString(),
 				eventID : eventID
 			};
 		const qrdatajson = JSON.stringify(qrdata);
