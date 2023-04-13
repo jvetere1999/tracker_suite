@@ -12,7 +12,7 @@ const EventButton = ({ bgColor, color, size, text, borderRadius }) => {
                 type="button"
                 style={{ backgroundColor: bgColor, color, borderRadius }}
                 className={`text-${size} p-3 hover:drop-shadow-xl`}
-                onClick={() => callPort('testing123')}>
+                onClick={() => callPort("testing123")}>
                 {text}
             </button>
         </div>
