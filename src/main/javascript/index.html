@@ -6,9 +6,23 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="qrcode.js"></script>
+	<style>
+		#qrcode {
+		  position: absolute;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		}
+		#qrdescription {
+			position: absolute;
+  			top: 0;
+  			left: 50%;
+  			transform: translateX(-50%);
+		}
+	  </style>
 </head>
 <body>
-	<p id="escapeDisclaimer"></p>
+	<p id="qrdescription"></p>
 	<div id="qrcode"></div>
 	<script type="text/javascript">
 		var maxWidth = window.innerWidth;
@@ -20,21 +34,21 @@
 		});
 		// qrcode.paddingRight = (maxWidth-smallerDim)/2;
 		// qrcode.paddingBottom = (maxHeight-smallerDim)/2;
-		// const url = window.location.href;
-		// const urlObj = new URL(url);
-		// const searchParams = urlObj.searchParams;
+		const url = window.location.href;
+		const urlObj = new URL(url);
+		const searchParams = urlObj.searchParams;
 		// const eventID = 0;
-		// const eventID = searchParams.get('eventID');
+		const eventID = searchParams.get('eventID');
 		function makeQR() {
 			const starttime = new Date();
 			const endtime = new Date(starttime.getTime() + 20000);
 			const qrdata = {
 				starttime : JSON.stringify(starttime.toUTCString()),
 				endtime : JSON.stringify(endtime.toUTCString()),
-				// deviceID : eventID
+				eventID : eventID
 			};
 		const qrdatajson = JSON.stringify(qrdata);
-		document.getElementById("escapeDisclaimer").innerHTML = "Press the escape key to close this window. Make sure to save the page URL if you need to return after closing the window";
+		document.getElementById("qrdescription").innerHTML = "QR Code to sign in to event: " + eventID;
 		qrcode.makeCode(qrdatajson);
 		setTimeout(makeQR, 20000)
 		}
