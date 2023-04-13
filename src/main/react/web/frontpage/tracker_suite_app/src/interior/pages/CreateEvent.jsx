@@ -79,7 +79,7 @@ import EventButton from '../components/EventButton';
       setEventRepeatError(eventRepeatError);
     } else {
       // Handle event submission logic here
-      const qrdata = {
+      const eventData = {
         eventName : eventName,
         eventDate : eventDate,
         eventStartTime : eventStartTime,
@@ -87,8 +87,8 @@ import EventButton from '../components/EventButton';
         eventLocation : eventLocation,
         eventRepeat : eventRepeat
       }
-      const qrdatajson = JSON.stringify(qrdata)
-      const url = `http://localhost:3001?eventID=${qrdatajson}`;
+      const eventDataJSON = JSON.stringify(eventData)
+      const url = `http://localhost:3001?eventID=${eventDataJSON}`;
       window.location.href = url;
     }
   };
