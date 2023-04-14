@@ -16,6 +16,7 @@ import EventButton from '../components/EventButton';
     const [eventEndTime, setEventEndTime] = useState("");
     const [eventLocation, setEventLocation] = useState("");
     const [eventRepeat, setEventRepeat] = useState("");
+    const [eventDetails, setEventDetails] = useState("");
     const [eventNameError, setEventNameError] = useState("");
     const [eventDateError, setEventDateError] = useState("");
     const [eventStartTimeError, setEventStartTimeError] = useState("");
@@ -43,6 +44,9 @@ import EventButton from '../components/EventButton';
   const handleEventRepeatChange = (e) => {
     setEventRepeat(e.target.value);
   };
+  const handleEventDetailsChange = (e) => {
+    setEventDetails(e.target.value);
+  }
 
   const handleErrors = (labelName, value) => {
     if (labelName === "eventName" && value.trim() === "") {
@@ -86,9 +90,10 @@ import EventButton from '../components/EventButton';
         eventStartTime : eventStartTime,
         eventEndTime : eventEndTime,
         eventLocation : eventLocation,
-        eventRepeat : eventRepeat
+        eventRepeat : eventRepeat,
+        eventDetails : eventDetails
       }
-      const eventDataJson = JSON.stringify(eventData)
+      const eventDataJSON = JSON.stringify(eventData)
       const url = `http://localhost:3001?eventID=${eventDataJSON}`;
       window.location.href = url;
     }
@@ -248,7 +253,8 @@ import EventButton from '../components/EventButton';
               bg-gray-200
               border-gray-300
               focus:border-gray-500 focus:bg-white focus:ring-0
-              "rows="5" spellCheck="true"></textarea>
+              " value={eventDetails} rows="5" spellCheck="true"
+              onChange={handleEventDetailsChange}></textarea>
           </label>
 
           <button 
