@@ -1,0 +1,33 @@
+CREATE DATABASE tracker_edge;
+
+USE tracker_edge;
+
+CREATE TABLE user (
+  username VARCHAR(255) NOT NULL,
+  google_oauth_profile_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (google_oauth_profile_id)
+);
+
+CREATE TABLE event (
+  eventID INT NOT NULL,
+  eventName VARCHAR(255) NOT NULL,
+  eventDate DATE NOT NULL,
+  eventStartTime TIME NOT NULL,
+  eventEndTime TIME NOT NULL,
+  eventLocation VARCHAR(255),
+  eventRepeat VARCHAR(50),
+  eventDescription TEXT,
+  PRIMARY KEY (eventID)
+);
+
+CREATE TABLE checkin (
+  checkintime DATETIME NOT NULL,
+  profileid VARCHAR(255) NOT NULL,
+  eventid INT NOT NULL,
+  PRIMARY KEY (checkintime, profileid, eventid),
+  FOREIGN KEY (profileid) REFERENCES user(google_oauth_profile_id),
+  FOREIGN KEY (eventid) REFERENCES event(eventID)
+);
+
+ALTER TABLE event
+ADD INDEX ix_eventName (eventName);
