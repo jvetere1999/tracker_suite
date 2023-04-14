@@ -22,6 +22,7 @@ import EventButton from '../components/EventButton';
     const [eventEndTimeError, setEventEndTimeError] = useState("");
     const [eventLocationError, setEventLocationError] = useState("");
     const [eventRepeatError, setEventRepeatError] = useState("");
+    const eventDataJSON = useState("");
   //const [errorMessage, setErrorMessage] = useState("");
 
   const handleEventNameChange = (e) => {
@@ -87,7 +88,7 @@ import EventButton from '../components/EventButton';
         eventLocation : eventLocation,
         eventRepeat : eventRepeat
       }
-      const eventDataJSON = JSON.stringify(eventData)
+      const eventDataJson = JSON.stringify(eventData)
       const url = `http://localhost:3001?eventID=${eventDataJSON}`;
       window.location.href = url;
     }
