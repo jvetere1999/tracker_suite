@@ -5,10 +5,13 @@ mod database_comms;
 use rocket::serde::{Deserialize, json::Json};
 use rocket::response::status;
 
-#[derive(Serialize, Deserialize)]
+
+#[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
+#[derive(Serialize, Deserialize)]
 struct SqlRequest {
-    query: String
+    query: String,
+    values: Vec<String>,
 }
 
 

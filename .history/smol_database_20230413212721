@@ -1,0 +1,9 @@
+CREATE DATABASE tracker_edge;
+
+USE tracker_edge;
+
+CREATE TABLE user (
+  username VARCHAR(255) NOT NULL,
+  google_oauth_profile_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (google_oauth_profile_id)
+);

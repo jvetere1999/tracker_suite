@@ -8,7 +8,8 @@ use rocket::response::status;
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 struct SqlRequest {
-    query: String
+    query: String,
+    values: Vec<String>,
 }
 
 
