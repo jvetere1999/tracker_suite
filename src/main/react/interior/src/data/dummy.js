@@ -450,39 +450,9 @@ export const links = [
         name: 'Create Event',
         icon: <FiEdit />,
       },
-      {
-        name: 'Find Events',
-        icon: <IoMdContacts />,
-      },
-      {
-        name: 'Attendees',
-        icon: <IoMdContacts />,
-      },
     ],
   },
-  {
-    title: ' Apps',
-    links: [
-      {
-        name: 'Calendar',
-        icon: <AiOutlineCalendar />,
-      },
-      {
-        name: 'Worklist',
-        icon: <BsKanban />,
-      },
-      
-    ],
-  },
-  {
-    title: 'Charts',
-    links: [
-      {
-        name: 'Bar',
-        icon: <FiPieChart />,
-      },
-    ],
-  },
+
 ];
 
 export const cartData = [
