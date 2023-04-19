@@ -99,26 +99,6 @@ impl Event {
             event_description,
         }
     }
-    
-    pub fn into_insert_query(&self) -> String {
-        let location = self.event_location.as_ref().map(|s| s.as_str()).unwrap_or_default();
-        let repeat = self.event_repeat.as_ref().map(|s| s.as_str()).unwrap_or_default();
-        let description = self.event_description.as_ref().map(|s| s.as_str()).unwrap_or_default();
-
-        format!(
-            "INSERT INTO events (event_id, eventName, eventDate, eventStartTime, eventEndTime, \
-            eventLocation, eventRepeat, eventDescription) VALUES ('{}', '{}', '{}', '{}', '{}', \
-            '{}', '{}', '{}')",
-            Uuid::new_v4().to_string(),
-            self.event_name,
-            self.event_date,
-            self.event_start_time,
-            self.event_end_time,
-            location,
-            repeat,
-            description,
-        )
-    }
 }
 
 

@@ -137,22 +137,8 @@ pub async fn create_event_test(db: &State<Database>, event: Json<Event>) -> Resu
 #[post("/create_event", format = "json", data = "<event>")]
 pub async fn create_event(db: &State<Database>, event: Json<Event>) -> Result<status::Accepted<String>, rocket::http::Status> {
     let event = event.into_inner();
-    let event_id = Uuid::new_v4().to_string();
-    let query = format!(
-        "INSERT INTO events (event_id, eventName, eventDate, eventStartTime, eventEndTime, \
-        eventLocation, eventRepeat, eventDescription) VALUES ('{}', '{}', '{}', '{}', '{}', \
-        '{}', '{}', '{}')",
-        event_id,
-        event.event_name,
-        event.event_date,
-        event.event_start_time,
-        event.event_end_time,
-        event.event_location.unwrap_or_default(),
-        event.event_repeat.unwrap_or_default(),
-        event.event_description.unwrap_or_default(),
-    );
-    match db.run(&query).await {
-        Ok(_) => Ok(status::Accepted(Some(event_id))),
+    match db.run(&event.into_insert_query()).await {
+        Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
         Err(_) => Err(rocket::http::Status::InternalServerError),
     }
 }
