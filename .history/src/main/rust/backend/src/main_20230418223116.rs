@@ -248,6 +248,8 @@ fn rocket() -> _ {
             create_event_test,
             check_in,
             check_in_test,
+            get_event_history,
+            event_history_test
         ])
         .manage(db)
 }

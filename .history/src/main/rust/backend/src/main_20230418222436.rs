@@ -146,13 +146,15 @@ pub async fn create_event(db: &State<Database>, event: Json<Event>) -> Result<st
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct CheckIn {
+    pub check_in: String,
     pub profile_id: String,
     pub event_id: String,
 }
 
 impl CheckIn {
-    pub fn new(profile_id: String, event_id: String) -> Self {
+    pub fn new(check_in: String, profile_id: String, event_id: String) -> Self {
         CheckIn {
+            check_in,
             profile_id,
             event_id,
         }
@@ -161,7 +163,7 @@ impl CheckIn {
     pub fn into_insert_query(&self) -> String {
         format!(
             "INSERT INTO check_ins (checkIn, profileId, eventId) VALUES ('{}', '{}', '{}')",
-            Uuid::new_v4().to_string(), self.profile_id, self.event_id
+            self.check_in, self.profile_id, self.event_id
         )
     }
 }
@@ -185,49 +187,48 @@ pub async fn check_in(db: &State<Database>, check_in: Json<CheckIn>) -> Result<s
     }
 }
 
-// #[derive(Serialize, Deserialize)]
-// #[serde(crate = "rocket::serde")]
-// pub struct EventHistory {
-//     pub profile_id: String
-// }
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct EventHistory {
+    pub profile_id: String
+}
 
-// #[post("/event_history", format = "json", data = "<history>")]
-// pub async fn get_event_history(db: &State<Database>, history: Json<EventHistory>) -> Result<Json<Vec<Event>>, rocket::http::Status> {
-//     let profile_id = &history.profile_id;
+#[get("/event_history?<history>")]
+pub async fn get_event_history(db: &State<Database>, history: Query<EventHistory>) -> Result<Json<Vec<Event>>, rocket::http::Status> {
+    let profile_id = &history.profile_id;
 
-//     match db.run(&format!("SELECT * FROM event JOIN checkin ON event.eventID = checkin.eventid WHERE checkin.profileid = '{}'", profile_id)).await {
-//         Ok(result) => {
-//             let events: Vec<Event> = result.iter()
-//                 .map(|row| {
-//                     Event {
-//                         event_id: row.get(0).unwrap(),
-//                         event_name: row.get(1).unwrap(),
-//                         event_date: row.get(2).unwrap(),
-//                         event_start_time: row.get(3).unwrap(),
-//                         event_end_time: row.get(4).unwrap(),
-//                         event_location: row.get(5).unwrap_or_default(),
-//                         event_repeat: row.get(6).unwrap_or_default(),
-//                         event_description: row.get(7).unwrap_or_default(),
-//                     }
-//                 })
-//                 .collect();
-//             Ok(Json(events))
-//         },
-//         Err(_) => Err(rocket::http::Status::InternalServerError),
-//     }
-// }
+    match db.run(&format!("SELECT * FROM event JOIN checkin ON event.eventID = checkin.eventid WHERE checkin.profileid = '{}'", profile_id)).await {
+        Ok(result) => {
+            let events: Vec<Event> = result.iter()
+                .map(|row| {
+                    Event {
+                        event_id: row.get(0).unwrap(),
+                        event_name: row.get(1).unwrap(),
+                        event_date: row.get(2).unwrap(),
+                        event_start_time: row.get(3).unwrap(),
+                        event_end_time: row.get(4).unwrap(),
+                        event_location: row.get(5).unwrap_or_default(),
+                        event_repeat: row.get(6).unwrap_or_default(),
+                        event_description: row.get(7).unwrap_or_default(),
+                    }
+                })
+                .collect();
+            Ok(Json(events))
+        },
+        Err(_) => Err(rocket::http::Status::InternalServerError),
+    }
+}
 
 
+#[post("/event_history_test", format = "json", data = "<history>")]
+pub fn event_history_test(history: Json<EventHistory>) -> String {
+    let profile_id = history.profile_id;
+    let select_statement = format!("SELECT eid, ename, date, loc, starttime, endtime FROM event JOIN checkin ON event.eventID = checkin.eventid WHERE profileid = '{}';", profile_id);
 
-// #[post("/event_history_test", format = "json", data = "<history>")]
-// pub fn event_history_test(history: Json<EventHistory>) -> String {
-//     let profile_id = history.profile_id;
-//     let select_statement = format!("SELECT eid, ename, date, loc, starttime, endtime FROM event JOIN checkin ON event.eventID = checkin.eventid WHERE profileid = '{}';", profile_id);
+    println!("SELECT statement: {}", select_statement);
 
-//     println!("SELECT statement: {}", select_statement);
-
-//     select_statement
-// }
+    select_statement
+}
 
 
 #[launch]
@@ -247,7 +248,7 @@ fn rocket() -> _ {
             create_event, 
             create_event_test,
             check_in,
-            check_in_test,
+            check_in_test
         ])
         .manage(db)
 }

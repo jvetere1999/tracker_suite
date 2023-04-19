@@ -161,7 +161,7 @@ impl CheckIn {
     pub fn into_insert_query(&self) -> String {
         format!(
             "INSERT INTO check_ins (checkIn, profileId, eventId) VALUES ('{}', '{}', '{}')",
-            Uuid::new_v4().to_string(), self.profile_id, self.event_id
+            sUuid::new_v4().to_string(), self.profile_id, self.event_id
         )
     }
 }
@@ -248,6 +248,8 @@ fn rocket() -> _ {
             create_event_test,
             check_in,
             check_in_test,
+            get_event_history,
+            event_history_test
         ])
         .manage(db)
 }
