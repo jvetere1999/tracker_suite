@@ -44,3 +44,4 @@ bin/
 ### Rust ###
 /src/main/react/web/admin.site/node_modules/
 /src/main/rust/backend/target/
+local.properties
