@@ -181,7 +181,7 @@ pub async fn check_in_test(db: &State<Database>, check_in: Json<CheckIn>) -> Res
 #[post("/check_in", format = "json", data = "<check_in>")]
 pub async fn check_in(db: &State<Database>, check_in: Json<CheckIn>) -> Result<status::Accepted<String>, rocket::http::Status> {
     let check_in = check_in.into_inner();
-    match db.run(&check_in.into_insert_query()).await {
+    match db.run(inner_check_in.into_insert_query()).await {
         Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
         Err(_) => Err(rocket::http::Status::InternalServerError),
     }

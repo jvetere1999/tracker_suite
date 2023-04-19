@@ -79,44 +79,48 @@ pub struct Event {
     pub event_description: Option<String>,
 }
 
-impl Event {
+pub struct TrueEvent {
+    pub event_id: String,
+    pub event_name: String,
+    pub event_date: String,
+    pub event_start_time: String,
+    pub event_end_time: String,
+    pub event_location: Option<String>,
+    pub event_repeat: Option<String>,
+    pub event_description: Option<String>,
+}
+
+impl TrueEvent {
     pub fn new(
-        event_name: String,
-        event_date: String,
-        event_start_time: String,
-        event_end_time: String,
-        event_location: Option<String>,
-        event_repeat: Option<String>,
-        event_description: Option<String>,
+        event: Event
     ) -> Self {
-        Event {
-            event_name,
-            event_date,
-            event_start_time,
-            event_end_time,
-            event_location,
-            event_repeat,
-            event_description,
+        let event_id = Uuid::new_v4().to_string();
+        TrueEvent {
+            event_id,
+            event.event_name,
+            event.event_date,
+            event.event_start_time,
+            event.event_end_time,
+            event.event_location,
+            event.event_repeat,
+            event.event_description,
         }
     }
     
-    pub fn into_insert_query(&self) -> String {
-        let location = self.event_location.as_ref().map(|s| s.as_str()).unwrap_or_default();
-        let repeat = self.event_repeat.as_ref().map(|s| s.as_str()).unwrap_or_default();
-        let description = self.event_description.as_ref().map(|s| s.as_str()).unwrap_or_default();
 
+    pub fn into_insert_query(self) -> String {
         format!(
             "INSERT INTO events (event_id, eventName, eventDate, eventStartTime, eventEndTime, \
             eventLocation, eventRepeat, eventDescription) VALUES ('{}', '{}', '{}', '{}', '{}', \
             '{}', '{}', '{}')",
-            Uuid::new_v4().to_string(),
+            self.event_id,
             self.event_name,
             self.event_date,
             self.event_start_time,
             self.event_end_time,
-            location,
-            repeat,
-            description,
+            self.event_location.unwrap_or_default(),
+            self.event_repeat.unwrap_or_default(),
+            self.event_description.unwrap_or_default(),
         )
     }
 }
@@ -136,57 +140,12 @@ pub async fn create_event_test(db: &State<Database>, event: Json<Event>) -> Resu
 
 #[post("/create_event", format = "json", data = "<event>")]
 pub async fn create_event(db: &State<Database>, event: Json<Event>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let event = event.into_inner();
-    match db.run(&event.into_insert_query()).await {
+    let t_eve = TrueEvent::new(event);
+    match db.run(&t_eve.into_insert_query()).await {
         Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
         Err(_) => Err(rocket::http::Status::InternalServerError),
     }
 }
-
-#[derive(Serialize, Deserialize)]
-#[serde(crate = "rocket::serde")]
-pub struct CheckIn {
-    pub check_in: String,
-    pub profile_id: String,
-    pub event_id: String,
-}
-
-impl CheckIn {
-    pub fn new(check_in: String, profile_id: String, event_id: String) -> Self {
-        CheckIn {
-            check_in,
-            profile_id,
-            event_id,
-        }
-    }
-
-    pub fn into_insert_query(&self) -> String {
-        format!(
-            "INSERT INTO check_ins (checkIn, profileId, eventId) VALUES ('{}', '{}', '{}')",
-            self.check_in, self.profile_id, self.event_id
-        )
-    }
-}
-
-#[post("/check_in_test", format = "json", data = "<check_in>")]
-pub async fn check_in_test(db: &State<Database>, check_in: Json<CheckIn>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let inner_check_in = check_in.into_inner(); // dereference Json<CheckIn> to get CheckIn
-    // Print the SQL query instead of executing it
-    println!("SQL query: {}", inner_check_in.into_insert_query());
-
-    // You can return a response indicating that the query was printed
-    Ok(status::Accepted(Some(format!("Printed SQL query: {}", inner_check_in.into_insert_query()))))
-}
-
-#[post("/check_in", format = "json", data = "<check_in>")]
-pub async fn check_in(db: &State<Database>, check_in: Json<CheckIn>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let check_in = check_in.into_inner();
-    match db.run(&check_in.into_insert_query()).await {
-        Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
-        Err(_) => Err(rocket::http::Status::InternalServerError),
-    }
-}
-
 
 #[launch]
 fn rocket() -> _ {
@@ -203,10 +162,7 @@ fn rocket() -> _ {
             sql,
             sql_test, 
             create_event, 
-            create_event_test,
-            check_in,
-            check_in_test
-        ])
+            create_event_test])
         .manage(db)
 }
 
