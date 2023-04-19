@@ -73,7 +73,7 @@ fn rocket() -> _ {
     };
 
     rocket::custom(config)
-        .mount("/", routes![sql,sql_test])
+        .mount("/", routes![sql,sql_tes])
         .manage(db)
 }
 

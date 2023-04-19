@@ -3,7 +3,6 @@
 use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket::response::status;
 use rocket::State;
-use rocket::Config;
 
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
@@ -40,41 +39,22 @@ impl Database {
 
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
-pub struct SqlRequest {
+struct SqlRequest {
     query: String,
 }
 
-
 #[post("/sql", format = "json", data = "<sql_object>")]
-pub async fn sql(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
+pub async fn sql_req(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
     match db.run(&sql_object.query).await {
         Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
         Err(_) => Err(rocket::http::Status::InternalServerError),
     }
 }
-#[post("/sql_test", format = "json", data = "<sql_object>")]
-pub async fn sql_test(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    // Print the SQL query instead of executing it
-    println!("SQL query: {}", sql_object.query);
-
-    // You can return a response indicating that the query was printed
-    Ok(status::Accepted(Some(format!("Printed SQL query: {}", sql_object.query))))
-}
-
 
 #[launch]
 fn rocket() -> _ {
     let db = Database::new();
-
-    let config = Config {
-        address: "0.0.0.0".parse().unwrap(),
-        port: 8000,
-        ..Config::default()
-    };
-
-    rocket::custom(config)
-        .mount("/", routes![sql,sql_test])
-        .manage(db)
+    rocket::build().mount("/", routes![sql_req]).manage(db)
 }
 
 

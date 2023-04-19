@@ -45,22 +45,13 @@ pub struct SqlRequest {
 }
 
 
-#[post("/sql", format = "json", data = "<sql_object>")]
-pub async fn sql(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    match db.run(&sql_object.query).await {
-        Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
-        Err(_) => Err(rocket::http::Status::InternalServerError),
-    }
-}
-#[post("/sql_test", format = "json", data = "<sql_object>")]
-pub async fn sql_test(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
-    // Print the SQL query instead of executing it
-    println!("SQL query: {}", sql_object.query);
-
-    // You can return a response indicating that the query was printed
-    Ok(status::Accepted(Some(format!("Printed SQL query: {}", sql_object.query))))
-}
-
+// #[post("/sql", format = "json", data = "<sql_object>")]
+// pub async fn sql_req(db: &State<Database>, sql_object: Json<SqlRequest>) -> Result<status::Accepted<String>, rocket::http::Status> {
+//     match db.run(&sql_object.query).await {
+//         Ok(result) => Ok(status::Accepted(Some(format!("Result: {:?}", result)))),
+//         Err(_) => Err(rocket::http::Status::InternalServerError),
+//     }
+// }
 
 #[launch]
 fn rocket() -> _ {
@@ -73,7 +64,7 @@ fn rocket() -> _ {
     };
 
     rocket::custom(config)
-        .mount("/", routes![sql,sql_test])
+        .mount("/", routes![sql_req])
         .manage(db)
 }
 

@@ -8,5 +8,8 @@ edition = "2021"
 [dependencies]
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
-mysql_async = "0.32.1"
+error: failed to select a version for the requirement `mysql_async = "^0.28.3"`
+candidate versions found which didn't match: 0.32.1, 0.31.3, 0.31.2, ...
+location searched: crates.io index
+required by package `TrackerEdge v0.1.0 (/Users/jacobvetere/Documents/Workspaces/prep/tracker_suite/src/main/rust/backend)`
 tokio = { version = "1", features = ["full"] }
