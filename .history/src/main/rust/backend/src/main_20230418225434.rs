@@ -139,7 +139,9 @@ pub async fn create_event(db: &State<Database>, event: Json<Event>) -> Result<st
     let event = event.into_inner();
     let event_id = Uuid::new_v4().to_string();
     let query = format!(
-        "INSERT INTO event (eventID, eventName, eventDate, eventStartTime, eventEndTime, eventLocation, eventRepeat, eventDescription) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')",
+        "INSERT INTO event (event_id, eventName, eventDate, eventStartTime, eventEndTime, \
+        eventLocation, eventRepeat, eventDescription) VALUES ('{}', '{}', '{}', '{}', '{}', \
+        '{}', '{}', '{}')",
         event_id,
         event.event_name,
         event.event_date,
