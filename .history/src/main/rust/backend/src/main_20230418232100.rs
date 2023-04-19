@@ -9,7 +9,6 @@ use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
 
 use uuid::Uuid;
-use std::time::{Duration, SystemTime};
 
 
 pub struct Database {
@@ -172,7 +171,7 @@ impl CheckIn {
     pub fn into_insert_query(&self) -> String {
         format!(
             "INSERT INTO checkin (checkintime, profileid, eventid) VALUES ('{}', '{}', '{}')",
-            SystemTime::now(), self.profile_id, self.event_id
+            SystemTime::now();, self.profile_id, self.event_id
         )
     }
 }

@@ -9,7 +9,6 @@ use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
 
 use uuid::Uuid;
-use std::time::{Duration, SystemTime};
 
 
 pub struct Database {
