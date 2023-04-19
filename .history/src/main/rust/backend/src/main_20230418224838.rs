@@ -174,7 +174,7 @@ impl CheckIn {
 
     pub fn into_insert_query(&self) -> String {
         format!(
-            "INSERT INTO checkin (checkintime, profileid, eventid) VALUES ('{}', '{}', '{}')",
+            "INSERT INTO checkin (checkIn, profileId, eventId) VALUES ('{}', '{}', '{}')",
             Uuid::new_v4().to_string(), self.profile_id, self.event_id
         )
     }
