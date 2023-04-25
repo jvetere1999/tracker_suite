@@ -5,15 +5,12 @@ import 'dart:math';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 class Clock extends StatefulWidget {
   @override
   _ClockState createState() => _ClockState();
 }
 
 class _ClockState extends State<Clock> {
-  Credentials? _credentials;
-  late Auth0 auth0;
 
   @override
   void initState() {
@@ -21,8 +18,8 @@ class _ClockState extends State<Clock> {
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {});
     });
-    auth0 = Auth0('dev-ocj0rgmusw7m0hn7.us.auth0.com', '4VJyOaNVpCaFte5vrucmPhgyPRRswBUP');
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,61 +51,9 @@ class _ClockState extends State<Clock> {
               ),
             ),
           ),
-          Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xFF3F6080).withOpacity(.2),
-                  blurRadius: 32,
-                  offset: Offset(10, 5),
-                ),
-                BoxShadow(
-                  color: Color(0xFFFFFFFF).withOpacity(1),
-                  blurRadius: 32,
-                  offset: Offset(-10, -5),
-                ),
-              ],
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [Color(0xFFE3F0F8), Color(0xFFEEF5FD)],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-              ),
-            ),
-          ),
-          //HERE
-          SizedBox(height: 24),
-          Positioned(
-            top: 200, // You can adjust this value to position the button as needed.
-            child: Visibility(
-              visible: _credentials == null,
-              child: OutlinedButton(
-                onPressed: () async {
-                  final credentials = await auth0.webAuthentication().login();
 
-                  setState(() {
-                    _credentials = credentials;
-                  });
-                },
-                child: Text(
-                  'Sign In/Sign Up',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 18,
-                    color: Colors.blue,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                ),
-              ),
-            ),
-          ),
           Transform.rotate(
-            angle: pi / 2,
+            angle: pi / 2, // change from pi / 2 to -pi / 2
             child: Container(
               constraints: BoxConstraints.expand(),
               child: CustomPaint(
