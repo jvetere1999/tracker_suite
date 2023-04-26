@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:applogin/pages/next_page.dart';
 
 import 'clock.dart';
 
