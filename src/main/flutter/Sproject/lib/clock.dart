@@ -5,13 +5,13 @@ import 'dart:math';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 class Clock extends StatefulWidget {
   @override
   _ClockState createState() => _ClockState();
 }
 
 class _ClockState extends State<Clock> {
-
   @override
   void initState() {
     super.initState();
@@ -51,7 +51,6 @@ class _ClockState extends State<Clock> {
               ),
             ),
           ),
-
           Transform.rotate(
             angle: pi / 2, // change from pi / 2 to -pi / 2
             child: Container(

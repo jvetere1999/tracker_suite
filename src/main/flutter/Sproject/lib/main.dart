@@ -18,7 +18,8 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     super.initState();
-    auth0 = Auth0('dev-ocj0rgmusw7m0hn7.us.auth0.com', '4VJyOaNVpCaFte5vrucmPhgyPRRswBUP');
+    auth0 = Auth0('dev-ocj0rgmusw7m0hn7.us.auth0.com',
+        '4VJyOaNVpCaFte5vrucmPhgyPRRswBUP');
   }
 
   Future<void> _logout() async {
@@ -62,8 +63,7 @@ class _MainViewState extends State<MainView> {
           if (_credentials == null)
             ElevatedButton(
               onPressed: () async {
-                final credentials =
-                await auth0.webAuthentication().login();
+                final credentials = await auth0.webAuthentication().login();
 
                 setState(() {
                   _credentials = credentials;
@@ -119,4 +119,3 @@ void main() {
     home: MainView(),
   ));
 }
-

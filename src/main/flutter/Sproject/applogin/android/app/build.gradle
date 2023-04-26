@@ -52,7 +52,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "https", applicationName: "applogin"]
+        manifestPlaceholders = [auth0Domain: "dev-ocj0rgmusw7m0hn7.us.auth0.com", auth0Scheme: "https", applicationName: "com.example.applogin"]
+
+
 
     }
 
