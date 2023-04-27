@@ -47,12 +47,15 @@ android {
         applicationId "com.auth0.eventpromobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        manifestPlaceholders = [auth0Domain: "dev-ocj0rgmusw7m0hn7.us.auth0.com", auth0Scheme: "eventpromobile"] // 👈 New code
+        manifestPlaceholders += [
+            auth0Domain: 'dev-ocj0rgmusw7m0hn7.us.auth0.com',
+            auth0Scheme: 'eventpromobile'
+        ]
 
     }
 
