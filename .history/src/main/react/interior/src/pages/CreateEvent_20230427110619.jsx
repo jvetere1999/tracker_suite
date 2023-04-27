@@ -102,7 +102,7 @@ import EventButton from '../components/EventButton';
           },
         });
         console.log('Response:', response);
-        const url = `http://50.122.223.254:3001?eventID=${response}`;
+        const url = `http://gh repo clone jvetere1999/tracker_suite:3001?eventID=${response}`;
         window.location.href = url;
       } catch (error) {
         console.error('Error:', error);

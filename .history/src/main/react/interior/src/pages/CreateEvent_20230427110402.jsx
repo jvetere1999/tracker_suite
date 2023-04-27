@@ -96,13 +96,13 @@ import EventButton from '../components/EventButton';
       }
       const eventDataJSON = JSON.stringify(eventData)
       try {
-        const response = await axios.post('http://50.122.223.254:8000/check_in_test', eventDataJSON, {
+        const response = await axios.post('http://localhost:8000/check_in_test', eventDataJSON, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
         console.log('Response:', response);
-        const url = `http://50.122.223.254:3001?eventID=${response}`;
+        const url = `http://localhost:3001?eventID=${response}`;
         window.location.href = url;
       } catch (error) {
         console.error('Error:', error);
