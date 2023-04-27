@@ -250,11 +250,10 @@ fn rocket() -> _ {
     let db = Database::new();
 
     let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
-
+    
     let config = Config {
         address: "0.0.0.0".parse().unwrap(),
         port: 8000,
-        tls: Some(tls_config),
         ..Config::default()
     };
 
