@@ -1,7 +1,6 @@
 //import React from 'react'
 import { Header, Button, Event } from '../components';
 import React, { useState } from "react";
-import axios from 'axios';
 import { useStateContext } from '../contexts/ContextProvider';
 import ReactDOM from "react-dom";
 import TimePicker from 'react-time-picker';
@@ -96,18 +95,20 @@ import EventButton from '../components/EventButton';
       }
       const eventDataJSON = JSON.stringify(eventData)
       try {
-        const response = await axios.post('http://localhost:8000/check_in_test', eventDataJSON, {
+        const response = await axios.post('http://localhost:3001/endpoint', eventDataJSON, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
         console.log('Response:', response);
-        const url = `http://localhost:3001?eventID=${response}`;
+        const url = `http://localhost:3001?eventID=${resp}`;
         window.location.href = url;
       } catch (error) {
         console.error('Error:', error);
         throw error;
       }
+      const url = `http://localhost:3001?eventID=${eventDataJSON}`;
+      window.location.href = url;
     }
   };
   
