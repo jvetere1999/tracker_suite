@@ -24,7 +24,7 @@
     "react-time-picker": "^5.2.0"
   },
   "scripts": {
-    "start": "export PORT=3001 && react-scripts start",
+    "start": "export PORT=3002 &&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
