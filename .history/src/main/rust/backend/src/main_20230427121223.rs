@@ -3,7 +3,7 @@
 use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket::response::status;
 use rocket::State;
-use rocket::config::{Config, TlsConfig};
+use rocket::config::{Config, TlsConfig, MutualTls};
 
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;

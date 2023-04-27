@@ -3,7 +3,7 @@
 use rocket::serde::{json::Json, Deserialize, Serialize};
 use rocket::response::status;
 use rocket::State;
-use rocket::config::{Config, TlsConfig};
+use rocket::Config;
 
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
@@ -250,11 +250,10 @@ fn rocket() -> _ {
     let db = Database::new();
 
     let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
-
+    
     let config = Config {
         address: "0.0.0.0".parse().unwrap(),
         port: 8000,
-        tls: Some(tls_config),
         ..Config::default()
     };
 
