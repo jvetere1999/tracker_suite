@@ -20,7 +20,7 @@ class Profile extends StatelessWidget {
   final Barcode? result;
   final Function(QRViewController) qr;
 
-  Profile(this.logoutAction, this.user, this._gLobalkey, this.qr, this.result,
+  const Profile(this.logoutAction, this.user, this._gLobalkey, this.qr, this.result,
       {final Key? key})
       : super(key: key);
 
@@ -37,7 +37,7 @@ class Profile extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 1),
+                border: Border.all(color: Colors.black, width: 1),
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.fill,
@@ -51,16 +51,25 @@ class Profile extends StatelessWidget {
               children: [
                 const SizedBox(height: 16),
                 Text('${user?.name}',
-                    style: TextStyle(
-                      color: Colors.blue,
+                    style: const TextStyle(
+                      color: Colors.black,
                       fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 2),
                 ElevatedButton(
                   onPressed: () async {
                     await logoutAction();
                   },
-                  child: const Text('Logout'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[200],
+                  ),
+                  child: const Text('Logout',
+                    style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24.0,
+                    ),
+                  ),
                 ),
               ],
             )
@@ -74,15 +83,39 @@ class Profile extends StatelessWidget {
           child: QRView(key: _gLobalkey, onQRViewCreated: qr),
         ),
       ),
+      const SizedBox(height: 35),
       ElevatedButton(
         onPressed: result != null
             ? () {
                 // do something with the result
+                // needs to reset result to null afterwards
               }
             : null,
+        style:
+          (result != null)
+            ? ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              fixedSize: const Size(392, 128),
+          )
+            : ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey[200],
+              fixedSize: const Size(392, 128),
+        ),
         child:
-            (result != null) ? Text('Submit Attendance') : Text('Scan a code'),
-      ),
+        (result != null)
+            ? const Text('Submit Attendance',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24.0,
+          ),
+        )
+            : const Text('Scan a code',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24.0,
+          ),
+        ),
+      )
     ]);
   }
 }
@@ -100,13 +133,26 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        const SizedBox(height: 50),
+        Image.asset('assets/images/attendance.png'),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () async {
             await loginAction();
           },
-          child: const Text('Login'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey[200],
+            fixedSize: const Size(384, 128),
+
+          ),
+          child: const Text('Login',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 48.0,
+            )
+          ),
         ),
         Text(loginError ?? ''),
       ],
@@ -154,7 +200,15 @@ class _MyAppState extends State<MyApp> {
       title: 'EventPro Mobile',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('EventPro Mobile'),
+          backgroundColor: Colors.grey[200],
+          title: const Text(
+              'EventPro Mobile',
+              style: TextStyle(
+                fontSize:24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black
+              )
+          ),
         ),
         body: Center(
           child: isBusy
