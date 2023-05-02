@@ -302,18 +302,17 @@ pub async fn sign_in(
             if result.is_empty() {
                 Err(rocket::http::Status::Unauthorized)
             } else {
-                let profile_id: Option<i32> = result
+                let profile_id = result
                     .get(0)
-                    .and_then(|row| row.get("profile_id"));
-                match profile_id {
-                    Some(id) => Ok(status::Accepted(Some(format!("Profile ID: {}", id)))),
-                    None => Err(rocket::http::Status::InternalServerError),
-                }
+                    .and_then(|row| row.get("profile_id"))
+                    .unwrap_or_default();
+                Ok(status::Accepted(Some(format!("Profile ID: {}", profile_id))))
             }
         }
         Err(_) => Err(rocket::http::Status::InternalServerError),
     }
 }
+
 
 
 #[launch]

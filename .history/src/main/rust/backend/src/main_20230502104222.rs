@@ -306,14 +306,7 @@ pub async fn sign_in(
                     .get(0)
                     .and_then(|row| row.get("profile_id"));
                 match profile_id {
-                    Some(id) => Ok(status::Accepted(Some(format!("Profile ID: {}", id)))),
-                    None => Err(rocket::http::Status::InternalServerError),
-                }
-            }
-        }
-        Err(_) => Err(rocket::http::Status::InternalServerError),
-    }
-}
+                    Some(id
 
 
 #[launch]
