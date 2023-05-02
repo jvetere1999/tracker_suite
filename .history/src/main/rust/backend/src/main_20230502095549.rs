@@ -322,7 +322,30 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
+     // Configure CORS
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:3001",
+        "http://localhost:8080",
+    ]);
+
+    let cors = CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![Method::Get, Method::Post, Method::Delete, Method::Options]
+            .into_iter()
+            .map(From::from)
+            .collect(),
+        allowed_headers: AllowedHeaders::some(&[
+            "Authorization",
+            "Accept",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+        ]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .unwrap();
+
     rocket::custom(config)
     .mount("/", routes![
         sql,
@@ -336,6 +359,7 @@ fn rocket() -> _ {
         sign_in_test,
     ])
     .manage(db)
+    .attach(cors)  
 }
 
 #[post("/create_profile_test", format = "json", data = "<profile>")]

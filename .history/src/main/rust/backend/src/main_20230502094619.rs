@@ -5,6 +5,11 @@ use rocket::response::status;
 use rocket::State;
 use rocket::config::{Config, TlsConfig};
 
+use rocket_cors::{
+    AllowedHeaders, AllowedOrigins, Error,
+    Cors, CorsOptions,
+};
+
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
 
@@ -314,7 +319,21 @@ pub async fn sign_in(
 #[launch]
 fn rocket() -> _ {
     let db = Database::new();
+    let allowed_origins = AllowedOrigins::all();
 
+    let cors = CorsOptions::default()
+        .allowed_origins(allowed_origins)
+        .allowed_methods(
+            vec![Method::Get, Method::Post, Method::Put, Method::Delete, Method::Options]
+                .into_iter()
+                .map(From::from)
+                .collect(),
+        )
+        .allowed_headers(AllowedHeaders::all())
+        .allow_credentials(true)
+        .max_age(1) // Short cache duration
+        .build()
+        .unwrap();
     // let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
 
     let config = Config {
@@ -322,8 +341,8 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
+    .attach(cors)
     .mount("/", routes![
         sql,
         sql_test, 

@@ -315,14 +315,13 @@ pub async fn sign_in(
 fn rocket() -> _ {
     let db = Database::new();
 
-    // let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
+    let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
 
     let config = Config {
         address: "0.0.0.0".parse().unwrap(),
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
     .mount("/", routes![
         sql,

@@ -322,7 +322,6 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
     .mount("/", routes![
         sql,

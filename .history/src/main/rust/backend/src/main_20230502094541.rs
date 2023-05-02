@@ -5,6 +5,10 @@ use rocket::response::status;
 use rocket::State;
 use rocket::config::{Config, TlsConfig};
 
+use rocket_cors::{
+    AllowedHeaders, AllowedOrigins, Error,
+    Cors, CorsOptions,
+};
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
 
@@ -322,7 +326,6 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
     .mount("/", routes![
         sql,
