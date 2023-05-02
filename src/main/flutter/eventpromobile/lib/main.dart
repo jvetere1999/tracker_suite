@@ -8,6 +8,10 @@ import 'package:auth0_flutter/auth0_flutter.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import 'package:eventpromobile/components/my_button.dart';
+
+import 'package:eventpromobile/components/my_textfield.dart';
+
 const appScheme = 'eventpromobile';
 
 /// -----------------------------------
@@ -20,7 +24,8 @@ class Profile extends StatelessWidget {
   final Barcode? result;
   final Function(QRViewController) qr;
 
-  const Profile(this.logoutAction, this.user, this._gLobalkey, this.qr, this.result,
+  const Profile(
+      this.logoutAction, this.user, this._gLobalkey, this.qr, this.result,
       {final Key? key})
       : super(key: key);
 
@@ -64,10 +69,11 @@ class Profile extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[200],
                   ),
-                  child: const Text('Logout',
+                  child: const Text(
+                    'Logout',
                     style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24.0,
+                      color: Colors.black,
+                      fontSize: 24.0,
                     ),
                   ),
                 ),
@@ -91,30 +97,30 @@ class Profile extends StatelessWidget {
                 // needs to reset result to null afterwards
               }
             : null,
-        style:
-          (result != null)
+        style: (result != null)
             ? ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              fixedSize: const Size(392, 128),
-          )
+                backgroundColor: Colors.blue,
+                fixedSize: const Size(392, 128),
+              )
             : ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[200],
-              fixedSize: const Size(392, 128),
-        ),
-        child:
-        (result != null)
-            ? const Text('Submit Attendance',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24.0,
-          ),
-        )
-            : const Text('Scan a code',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24.0,
-          ),
-        ),
+                backgroundColor: Colors.grey[200],
+                fixedSize: const Size(392, 128),
+              ),
+        child: (result != null)
+            ? const Text(
+                'Submit Attendance',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.0,
+                ),
+              )
+            : const Text(
+                'Scan a code',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.0,
+                ),
+              ),
       )
     ]);
   }
@@ -123,39 +129,135 @@ class Profile extends StatelessWidget {
 /// -----------------------------------
 ///            Login Widget
 /// -----------------------------------
-class Login extends StatelessWidget {
+// class Login extends StatelessWidget {
+//   final Future<void> Function() loginAction;
+//   final String loginError;
+
+//   const Login(this.loginAction, this.loginError, {final Key? key})
+//       : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.start,
+//       children: <Widget>[
+//         const SizedBox(height: 50),
+//         Image.asset('assets/images/attendance.png'),
+//         const SizedBox(height: 20),
+//         ElevatedButton(
+//           onPressed: () async {
+//             await loginAction();
+//           },
+//           style: ElevatedButton.styleFrom(
+//             backgroundColor: Colors.grey[200],
+//             fixedSize: const Size(384, 128),
+
+//           ),
+//           child: const Text('Login',
+//             style: TextStyle(
+//               color: Colors.black,
+//               fontSize: 48.0,
+//             )
+//           ),
+//         ),
+//         Text(loginError ?? ''),
+//       ],
+//     );
+//   }
+// }
+
+class LoginPage extends StatelessWidget {
   final Future<void> Function() loginAction;
   final String loginError;
 
-  const Login(this.loginAction, this.loginError, {final Key? key})
+  LoginPage(this.loginAction, this.loginError, {final Key? key})
       : super(key: key);
+  // text editing controllers
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // sign user in method
+  void signUserIn() {}
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        const SizedBox(height: 50),
-        Image.asset('assets/images/attendance.png'),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () async {
-            await loginAction();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey[200],
-            fixedSize: const Size(384, 128),
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
 
-          ),
-          child: const Text('Login',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 48.0,
-            )
+              // logo
+              const Icon(
+                Icons.lock,
+                size: 100,
+              ),
+
+              const SizedBox(height: 50),
+
+              // welcome back, you've been missed!
+              Text(
+                'Welcome back you\'ve been missed!',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // username textfield
+              MyTextField(
+                controller: usernameController,
+                hintText: 'Username',
+                obscureText: false,
+              ),
+
+              const SizedBox(height: 10),
+
+              // password textfield
+              MyTextField(
+                controller: passwordController,
+                hintText: 'Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+
+              const SizedBox(height: 25),
+
+              // sign in button
+              MyButton(
+                onTap: signUserIn,
+              ),
+
+              const SizedBox(height: 50),
+
+              // not a member? register now
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Not a member?',
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'Register now',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
-        Text(loginError ?? ''),
-      ],
+      ),
     );
   }
 }
@@ -201,14 +303,11 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.grey[200],
-          title: const Text(
-              'EventPro Mobile',
+          title: const Text('EventPro Mobile',
               style: TextStyle(
-                fontSize:24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black
-              )
-          ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
         ),
         body: Center(
           child: isBusy
@@ -216,7 +315,7 @@ class _MyAppState extends State<MyApp> {
               : _credentials != null
                   ? Profile(
                       logoutAction, _credentials?.user, _gLobalkey, qr, result)
-                  : Login(loginAction, errorMessage),
+                  : LoginPage(loginAction, errorMessage),
         ),
       ),
     );
