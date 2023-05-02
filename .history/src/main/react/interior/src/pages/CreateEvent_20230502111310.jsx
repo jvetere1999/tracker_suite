@@ -96,7 +96,7 @@ import EventButton from '../components/EventButton';
       }
       const eventDataJSON = JSON.stringify(eventData)
       try {
-        const response = await axios.post('http://localhost:8000/create_event', eventDataJSON, {
+        const response = await axios.post('http://localhost:8000/create_event_test', eventDataJSON, {
           headers: {
             'Content-Type': 'application/json',
           },
