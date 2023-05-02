@@ -302,11 +302,7 @@ pub async fn sign_in(
             if result.is_empty() {
                 Err(rocket::http::Status::Unauthorized)
             } else {
-                let profile_id = result
-                    .get(0)
-                    .and_then(|row| row.get("profile_id"))
-                    .unwrap_or_default();
-                Ok(status::Accepted(Some(format!("Profile ID: {}", profile_id))))
+                Ok(status::Accepted(Some(format!("Result: {:?}", result))))
             }
         }
         Err(_) => Err(rocket::http::Status::InternalServerError),
@@ -326,7 +322,29 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
+     // Configure CORS
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:3000",
+        "http://localhost:8080",
+    ]);
+
+    let cors = CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![Method::Get, Method::Post, Method::Delete, Method::Options]
+            .into_iter()
+            .map(From::from)
+            .collect(),
+        allowed_headers: AllowedHeaders::some(&[
+            "Authorization",
+            "Accept",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+        ]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .unwrap();
     rocket::custom(config)
     .mount("/", routes![
         sql,

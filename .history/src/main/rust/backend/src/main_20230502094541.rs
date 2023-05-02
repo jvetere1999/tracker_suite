@@ -5,6 +5,10 @@ use rocket::response::status;
 use rocket::State;
 use rocket::config::{Config, TlsConfig};
 
+use rocket_cors::{
+    AllowedHeaders, AllowedOrigins, Error,
+    Cors, CorsOptions,
+};
 use mysql_async::{Pool, Conn, Row, Opts, OptsBuilder};
 use mysql_async::prelude::Queryable;
 
@@ -302,11 +306,7 @@ pub async fn sign_in(
             if result.is_empty() {
                 Err(rocket::http::Status::Unauthorized)
             } else {
-                let profile_id = result
-                    .get(0)
-                    .and_then(|row| row.get("profile_id"))
-                    .unwrap_or_default();
-                Ok(status::Accepted(Some(format!("Profile ID: {}", profile_id))))
+                Ok(status::Accepted(Some(format!("Result: {:?}", result))))
             }
         }
         Err(_) => Err(rocket::http::Status::InternalServerError),
@@ -326,7 +326,6 @@ fn rocket() -> _ {
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
     .mount("/", routes![
         sql,

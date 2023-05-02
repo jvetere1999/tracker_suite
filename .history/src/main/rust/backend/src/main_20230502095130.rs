@@ -302,11 +302,7 @@ pub async fn sign_in(
             if result.is_empty() {
                 Err(rocket::http::Status::Unauthorized)
             } else {
-                let profile_id = result
-                    .get(0)
-                    .and_then(|row| row.get("profile_id"))
-                    .unwrap_or_default();
-                Ok(status::Accepted(Some(format!("Profile ID: {}", profile_id))))
+                Ok(status::Accepted(Some(format!("Result: {:?}", result))))
             }
         }
         Err(_) => Err(rocket::http::Status::InternalServerError),
@@ -319,14 +315,13 @@ pub async fn sign_in(
 fn rocket() -> _ {
     let db = Database::new();
 
-    // let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
+    let tls_config = TlsConfig::from_paths("cert.pem", "key.pem");
 
     let config = Config {
         address: "0.0.0.0".parse().unwrap(),
         port: 8000,
         ..Config::default()
     };
-    
     rocket::custom(config)
     .mount("/", routes![
         sql,
