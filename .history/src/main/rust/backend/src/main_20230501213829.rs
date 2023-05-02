@@ -327,6 +327,7 @@ fn rocket() -> _ {
     .mount("/", routes![
         sql,
         sql_test, 
+        create_event, 
         create_event_test,
         check_in,
         check_in_test,
@@ -340,15 +341,15 @@ fn rocket() -> _ {
 
 #[post("/create_profile_test", format = "json", data = "<profile>")]
 pub async fn create_profile_test(
-    db: &State<Database>,
-    profile: Json<Profile>,
-    ) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let profile = profile.into_inner();
-    println!("SQL query: {}", profile.into_insert_query());
-    Ok(status::Accepted(Some(format!(
-        "Printed SQL query: {}",
-        profile.into_insert_query()
-    ))))
+db: &State<Database>,
+profile: Json<Profile>,
+) -> Result<status::Accepted<String>, rocket::http::Status> {
+let profile = profile.into_inner();
+println!("SQL query: {}", profile.into_insert_query());
+Ok(status::Accepted(Some(format!(
+    "Printed SQL query: {}",
+    profile.into_insert_query()
+))))
 }
 
 #[post("/sign_in_test", format = "json", data = "<sign_in>")]

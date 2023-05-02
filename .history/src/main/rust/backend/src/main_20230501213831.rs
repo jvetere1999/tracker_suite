@@ -327,6 +327,7 @@ fn rocket() -> _ {
     .mount("/", routes![
         sql,
         sql_test, 
+        create_event, 
         create_event_test,
         check_in,
         check_in_test,

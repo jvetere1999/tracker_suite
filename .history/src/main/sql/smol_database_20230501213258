@@ -32,3 +32,4 @@ CREATE TABLE checkin (
 
 ALTER TABLE event
 ADD INDEX ix_eventName (eventName);
+

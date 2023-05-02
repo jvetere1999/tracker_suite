@@ -3,10 +3,9 @@ CREATE DATABASE tracker_edge;
 USE tracker_edge;
 
 CREATE TABLE profile (
-  profile_id INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  PRIMARY KEY (profile_id)
+  google_oauth_profile_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (google_oauth_profile_id)
 );
 
 CREATE TABLE event (
@@ -23,10 +22,10 @@ CREATE TABLE event (
 
 CREATE TABLE checkin (
   checkintime DATETIME NOT NULL,
-  profileid INT NOT NULL,
+  profileid VARCHAR(255) NOT NULL,
   eventid INT NOT NULL,
   PRIMARY KEY (checkintime, profileid, eventid),
-  FOREIGN KEY (profileid) REFERENCES profile(profile_id),
+  FOREIGN KEY (profileid) REFERENCES profile(google_oauth_profile_id),
   FOREIGN KEY (eventid) REFERENCES event(eventID)
 );
 

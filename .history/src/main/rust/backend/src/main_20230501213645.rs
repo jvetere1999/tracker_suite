@@ -323,43 +323,35 @@ fn rocket() -> _ {
         tls: Some(tls_config),
         ..Config::default()
     };
+
     rocket::custom(config)
-    .mount("/", routes![
-        sql,
-        sql_test, 
-        create_event_test,
-        check_in,
-        check_in_test,
-        create_profile,
-        create_profile_test,
-        sign_in,
-        sign_in_test,
-    ])
-    .manage(db)
+        .mount("/", routes![
+            sql,
+            sql_test, 
+            create_event, 
+            create_event_test,
+            check_in,
+            check_in_test,
+        ])
+        .manage(db)
 }
 
-#[post("/create_profile_test", format = "json", data = "<profile>")]
-pub async fn create_profile_test(
-    db: &State<Database>,
-    profile: Json<Profile>,
-    ) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let profile = profile.into_inner();
-    println!("SQL query: {}", profile.into_insert_query());
-    Ok(status::Accepted(Some(format!(
-        "Printed SQL query: {}",
-        profile.into_insert_query()
-    ))))
-}
 
-#[post("/sign_in_test", format = "json", data = "<sign_in>")]
-pub async fn sign_in_test(
-    db: &State<Database>,
-    sign_in: Json<SignIn>,
-    ) -> Result<status::Accepted<String>, rocket::http::Status> {
-    let sign_in = sign_in.into_inner();
-    println!("SQL query: {}", sign_in.into_select_query());
-    Ok(status::Accepted(Some(format!(
-        "Printed SQL query: {}",
-        sign_in.into_select_query()
-    ))))
-}
+// #[get("/check")]
+// fn check() -> status::Accepted<String> { status::Accepted(Some("Here".parse().unwrap())) }
+
+// #[post("/check_in", format = "application/json", data = "<check_in>", rank = 2)]
+// fn check_in(check_in: Json<CheckIn<'_>>) -> status::Accepted<String> {
+//     // Insert into database
+//     //DATABASE.insert(entry.into_inner());
+//     //print!(entry);
+//     status::Accepted(Some(format!("id: '{}'", check_in.uuid)))
+// }
+
+// #[post("/login", format = "application/json", data = "<login>", rank = 3)]
+// fn login(login: Json<Login<'_>>) -> status::Accepted<String> {
+//     // Insert into database
+//     //DATABASE.insert(entry.into_inner());
+//     //print!(entry);
+//     status::Accepted(Some(format!("Welcome {}!", login.name)))
+// }
